@@ -1,5 +1,11 @@
 import React from 'react'
+import Svg from './Svg'
+import ReactSVG from 'react-svg'
+import Fish from '../../public/graphics/fish.svg'
+import Brick from '../../public/graphics/brick-wall.svg'
+import Water from '../../public/graphics/flood.svg'
 import KeyboardEventHandler from 'react-keyboard-event-handler'
+
 
 const board = [
   ['x', 'x', 'x', 'x', ' ', 'x', 'x', 'x', 'x', 'x'],
@@ -11,8 +17,7 @@ const board = [
   ['x', 'x', 'x', 'x', ' ', 'x', 'x', ' ', 'x', 'x'],
   ['x', 'x', 'x', 'x', ' ', 'x', 'x', ' ', 'x', 'x'],
   ['x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', 'x', 'x'],
-  ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
-
+  ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']
 ]
 
 class Maze extends React.Component {
@@ -65,8 +70,18 @@ class Maze extends React.Component {
 
   render() {
 
-    const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{col}</td>)
+    const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{renderGraphics(col)}</td>)
     const renderBoard = () => this.state.board.map((row, index) => <tr key={index}>{renderRow(row, index)}</tr>)
+
+    const renderGraphics = (col) => {
+      if (col == 'x') {
+        return <img src={Brick} width="25" />
+      } else if (col === 'o') {
+        return <img src={Fish} width="25" />
+      } else if (col === ' ') {
+        return <img src={Water} width="25" />
+      }
+    }
 
     return (
       <table>
@@ -77,6 +92,7 @@ class Maze extends React.Component {
             onKeyEvent={(key, e) => this.handleKeyPress(key)} />
         </tbody>
       </table>
+
     )
   }
 }

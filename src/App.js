@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import Maze from './Maze'
+import Maze from './components/Maze'
 import './App.css';
+
 
 class App extends Component {
   render() {
     return (
-      <Maze />
+      <div>
+        <Maze />
+      </div>
+
     )
   }
 }
