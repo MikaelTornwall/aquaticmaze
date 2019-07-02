@@ -17,10 +17,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    const newBoard = this.generateBoardCopy()
-    this.setState({
-      board: newBoard
-    })
+    this.setState({ board: this.generateBoardCopy() })
   }
 
   componentDidMount() {
@@ -28,26 +25,16 @@ class App extends Component {
   }
 
   initState = () => {
-    for (let i = 0; i < this.state.board.length; i++) {
-      for (let j = 0; j < this.state.board[i].length; j++) {
-        if (this.state.board[i][j] === 'o') {
-          this.setState({
-            i: i,
-            j: j
-          })
-        }
-      }
-    }
-  }
+    this.state.board.map((row, i) =>
+      row.map((col, j) => {
+        if (this.state.board[i][j] === 'o') this.setState({ i: i, j: j })
+      })
+    )}
 
-  generateBoardCopy = () => {
-    const copy = Board.map(row => [...row])
-    return copy
-  }
+  generateBoardCopy = () => Board.map(row => [...row])
 
-  restart = () => {
-    const newBoard = this.generateBoardCopy()
-    this.setState({ board: newBoard })
+  restart = async () => {
+    await this.setState({ board: this.generateBoardCopy() })
     this.initState()
   }
 
