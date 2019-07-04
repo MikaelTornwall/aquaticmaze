@@ -1,0 +1,9 @@
+.statistics {
+  background: orange;
+  color: white;
+  padding: 0.3rem;
+}
+
+.statistics__stat {
+  margin-right: 1rem;
+}

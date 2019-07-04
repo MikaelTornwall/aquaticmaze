@@ -32,6 +32,8 @@ class App extends Component {
     message: "",
     points: 0,
     strokes: 0,
+    seconds: 0,
+    minutes: 0,
     finished: false
   }
 
@@ -41,6 +43,14 @@ class App extends Component {
 
   componentDidMount() {
     this.initState()
+    //this.clock()
+  }
+
+  clock = () => {
+      setInterval(() => {
+        this.setState({ seconds: this.state.seconds + 1 })
+        if (this.state.seconds === 60) this.setState({ seconds: 0, minutes: this.state.minutes + 1 })
+      }, 1000)
   }
 
   initState = () => {
@@ -57,7 +67,9 @@ class App extends Component {
       board: this.generateBoardCopy(),
       points: 0,
       strokes: 0,
-      finished: false
+      finished: false,
+      seconds: 0,
+      minutes: 0
     })
     this.initState()
   }
@@ -86,6 +98,8 @@ class App extends Component {
 
   move = (di, dj) => {
 
+    if (this.state.strokes === 0) this.clock()
+
     if (this.finish(di, dj)) {
       this.setState({
         message: "Well done!",
@@ -109,6 +123,14 @@ class App extends Component {
   }
 
   render() {
+
+    const time = () => {
+      let time = ""
+      this.state.minutes < 10 ? time += "0" + this.state.minutes + ":" : time += this.state.minutes + ":"
+      this.state.seconds < 10 ? time += "0" + this.state.seconds : time += this.state.seconds
+
+      return time
+    }
 
     const renderGraphics = (col) => {
       if (col === 'x') {
@@ -149,6 +171,7 @@ class App extends Component {
       <Statistics
         points={this.state.points}
         strokes={this.state.strokes}
+        time={time()}
       />
       <Maze
         renderBoard={renderBoard()}
@@ -159,7 +182,6 @@ class App extends Component {
       />
       </div>
     )
-
 
     return (
       <div className="Container">
