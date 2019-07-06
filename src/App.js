@@ -5,6 +5,7 @@ import Maze from './components/Maze'
 import Restart from './components/Restart'
 import Success from './components/Success'
 import Statistics from './components/Statistics'
+import Footer from './components/Footer'
 
 // Graphics
 import Fish from '../public/graphics/fish.svg'
@@ -16,9 +17,10 @@ import Pipe from '../public/graphics/pipes.svg'
 // Helpers
 import ReactTimeout from 'react-timeout'
 import KeyboardEventHandler from 'react-keyboard-event-handler'
+import Helper from './Helpers'
 
 // Maps
-const Board = require('../public/maps/levelone.js')
+const Levels = require('../public/maps/levels.js')
 
 // Styles
 import './App.css';
@@ -26,6 +28,7 @@ import './App.css';
 class App extends Component {
   state = {
     board: null,
+    level: 1,
     i: null,
     j: null,
     direction: 90,
@@ -34,7 +37,8 @@ class App extends Component {
     strokes: 0,
     seconds: 0,
     minutes: 0,
-    finished: false
+    finished: false,
+    credits: false
   }
 
   componentWillMount() {
@@ -43,35 +47,50 @@ class App extends Component {
 
   componentDidMount() {
     this.initState()
-    //this.clock()
   }
 
   clock = () => {
       setInterval(() => {
-        this.setState({ seconds: this.state.seconds + 1 })
-        if (this.state.seconds === 60) this.setState({ seconds: 0, minutes: this.state.minutes + 1 })
+        this.setState({
+          seconds: Helper.seconds(this.state.seconds),
+          minutes: Helper.minutes(this.state.seconds, this.state.minutes)
+        })
       }, 1000)
   }
 
   initState = () => {
     this.state.board.map((row, i) =>
-      row.map((col, j) => {
-        if (this.state.board[i][j] === 'o') this.setState({ i: i, j: j })
-      })
+      row.map((col, j) => (this.state.board[i][j] === 'o') ? this.setState({ i: i, j: j }) : null)
     )}
 
-  generateBoardCopy = () => Board.map(row => [...row])
+  generateBoardCopy = () => Levels[this.state.level - 1].board.map(row => [...row])
 
   restart = async () => {
     await this.setState({
       board: this.generateBoardCopy(),
       points: 0,
       strokes: 0,
-      finished: false,
       seconds: 0,
-      minutes: 0
+      minutes: 0,
+      finished: false
     })
     this.initState()
+  }
+
+  toggleCredits = () => this.state.credits ? this.setState({ credits: false }) : this.setState({ credits: true })
+
+  nextLevel = async () => {
+    if (this.state.level === Levels.length) {
+      this.setState({
+        message: "You have successfully finished the game!"
+      })
+    } else {
+      await this.setState({
+        level: this.state.level + 1
+      })
+
+      this.restart()
+    }
   }
 
   handleKeyPress = (key) => {
@@ -90,31 +109,21 @@ class App extends Component {
     }
   }
 
-  isOk = (di, dj) => this.state.board[this.state.i + di][this.state.j + dj] !== "x" ? true : false
-
-  finish = (di, dj) => this.state.board[this.state.i + di][this.state.j + dj] === "p" ? true : false
-
-  food = (di, dj) => this.state.board[this.state.i + di][this.state.j + dj] === "s" ? true : false
-
   move = (di, dj) => {
+    if (this.state.strokes === 0 && this.state.level === 1) this.clock()
 
-    if (this.state.strokes === 0) this.clock()
-
-    if (this.finish(di, dj)) {
+    if (Helper.checkType(this.state.board, this.state.i + di, this.state.j + dj, "p")) {
       this.setState({
         message: "Well done!",
         finished: true
       })
     }
 
-    if (this.food(di, dj)) this.setState({ points: this.state.points + 1 })
+    if (Helper.checkType(this.state.board, this.state.i + di, this.state.j + dj, "s")) this.setState({ points: this.state.points + 1 })
 
-    if (this.isOk(di, dj)) {
-      let newBoard = this.state.board.map(row => [...row])
-      newBoard[this.state.i][this.state.j] = " "
-      newBoard[this.state.i + di][this.state.j + dj] = "o"
+    if (Helper.isOk(this.state.board, this.state.i + di, this.state.j + dj)) {
       this.setState({
-        board: newBoard,
+        board: Helper.stroke(this.state.board, this.state.i, this.state.j, di, dj),
         i: this.state.i + di,
         j: this.state.j + dj,
         strokes: this.state.strokes + 1
@@ -124,23 +133,15 @@ class App extends Component {
 
   render() {
 
-    const time = () => {
-      let time = ""
-      this.state.minutes < 10 ? time += "0" + this.state.minutes + ":" : time += this.state.minutes + ":"
-      this.state.seconds < 10 ? time += "0" + this.state.seconds : time += this.state.seconds
-
-      return time
-    }
-
     const renderGraphics = (col) => {
       if (col === 'x') {
         return <img src={Brick} width="25" />
       } else if (col === 'o') {
-        return <img style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" />
+        return <img id="fish" style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" />
       } else if (col === ' ') {
         return <img src={Water} width="25" />
       } else if (col === 's') {
-        return <img src={Sushi} width="25" />
+        return <img id="sushi" src={Sushi} width="25" />
       } else if (col === 'p') {
         return <img src={Pipe} width="25" />
       }
@@ -148,47 +149,47 @@ class App extends Component {
 
     const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{renderGraphics(col)}</td>)
     const renderBoard = () => this.state.board.map((row, index) => <tr key={index}>{renderRow(row, index)}</tr>)
-
-
-    const finished = () => {
-      if (this.state.finished) {
-        return renderFinished()
-      } else {
-        return renderGame()
-      }
-    }
+    const finished = () => this.state.finished ? renderFinished() : renderGame()
 
     const renderFinished = () => (
       <Success
         message={this.state.message}
         points={this.state.points}
         strokes={this.state.strokes}
+        onClick={this.nextLevel}
       />
     )
 
     const renderGame = () => (
       <div>
-      <Statistics
-        points={this.state.points}
-        strokes={this.state.strokes}
-        time={time()}
-      />
-      <Maze
-        renderBoard={renderBoard()}
-      />
-      <KeyboardEventHandler
-        handleKeys={['up', 'down', 'left', 'right']}
-        onKeyEvent={(key, e) => this.handleKeyPress(key)}
-      />
+        <Statistics
+          points={this.state.points}
+          strokes={this.state.strokes}
+          time={Helper.time(this.state.seconds, this.state.minutes)}
+        />
+        <Maze
+          renderBoard={renderBoard()}
+        />
+        <KeyboardEventHandler
+          handleKeys={['up', 'down', 'left', 'right']}
+          onKeyEvent={(key, e) => this.handleKeyPress(key)}
+        />
       </div>
     )
 
     return (
       <div className="Container">
-        {finished()}
-        <Restart
-          onClick={this.restart}
-        />
+        <div className="Container__game">
+          {finished()}
+          <Restart
+            onClick={this.restart}
+          />
+          </div>
+          <Footer
+            id="Footer"
+            onClick={this.toggleCredits}
+            credits={this.state.credits}
+          />
       </div>
 
     )

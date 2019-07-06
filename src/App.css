@@ -1,4 +1,7 @@
 .Container {
+}
+
+.Container__game {
   margin: 1rem;
   padding: .5rem;
   display: flex;
@@ -38,10 +41,36 @@ button {
   to { transform: rotate(360deg); }
 }
 
+table {
+  background: lightblue;
+}
+
 td {
   padding: 0;
 }
 
 tr {
   padding: 0
+}
+
+a {
+  cursor: pointer;
+}
+
+#fish {
+}
+
+#sushi {
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-name: sushi;
+}
+
+@keyframes sushi {
+    33% {
+      transform: rotate(5deg);
+    }
+    66% {
+      transform: rotate(-5deg);
+    }
 }
