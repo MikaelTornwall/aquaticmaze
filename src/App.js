@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 // Components
 import Maze from './components/Maze'
@@ -15,7 +15,6 @@ import Sushi from '../public/graphics/sushi.svg'
 import Pipe from '../public/graphics/pipes.svg'
 
 // Helpers
-import ReactTimeout from 'react-timeout'
 import KeyboardEventHandler from 'react-keyboard-event-handler'
 import Helper from './Helpers'
 
@@ -23,7 +22,7 @@ import Helper from './Helpers'
 const Levels = require('../public/maps/levels.js')
 
 // Styles
-import './App.css';
+import './App.css'
 
 class App extends Component {
   state = {
@@ -135,21 +134,17 @@ class App extends Component {
 
     const renderGraphics = (col) => {
       if (col === 'x') {
-        return <img src={Brick} width="25" />
+        return <img src={Brick} width="25" alt="" />
       } else if (col === 'o') {
-        return <img id="fish" style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" />
+        return <img id="fish" style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" alt="" />
       } else if (col === ' ') {
-        return <img src={Water} width="25" />
+        return <img src={Water} width="25" alt="" />
       } else if (col === 's') {
-        return <img id="sushi" src={Sushi} width="25" />
+        return <img id="sushi" src={Sushi} width="25" alt="" />
       } else if (col === 'p') {
-        return <img src={Pipe} width="25" />
+        return <img src={Pipe} width="25" alt="" />
       }
     }
-
-    const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{renderGraphics(col)}</td>)
-    const renderBoard = () => this.state.board.map((row, index) => <tr key={index}>{renderRow(row, index)}</tr>)
-    const finished = () => this.state.finished ? renderFinished() : renderGame()
 
     const renderFinished = () => (
       <Success
@@ -159,6 +154,9 @@ class App extends Component {
         onClick={this.nextLevel}
       />
     )
+
+    const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{renderGraphics(col)}</td>)
+    const renderBoard = () => this.state.board.map((row, index) => <tr key={index}>{renderRow(row, index)}</tr>)
 
     const renderGame = () => (
       <div>
@@ -176,6 +174,8 @@ class App extends Component {
         />
       </div>
     )
+
+    const finished = () => this.state.finished ? renderFinished() : renderGame()
 
     return (
       <div className="Container">
