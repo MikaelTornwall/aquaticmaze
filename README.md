@@ -1,7 +1,7 @@
 # Aquatic Maze game
 
 ## Description
-The goal in the game is to find your way out of maze. Feed the fish along the way to gain points.
+The goal in the game is to find your way out of the maze. Feed the fish along the way to gain points.
 
 Work in progress.
 
