@@ -10,7 +10,7 @@
 }
 
 button {
-  background: orange;
+  background: var(--main-color);
   color: white;
   padding: .5rem;
   border: none;

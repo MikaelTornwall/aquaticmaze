@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem .5rem 2rem;  
+  padding: 0 .5rem 2rem;
 }
 
 #Footer__info {
@@ -12,7 +12,7 @@
 
 #Footer a {
   margin: 0 auto;
-  color: green;
+  color: var(--link-color);
   font-size: 1.2rem;
 }
 
