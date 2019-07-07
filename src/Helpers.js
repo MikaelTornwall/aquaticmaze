@@ -2,12 +2,12 @@ const isOk = (board, i, j) => board[i][j] !== "x" ? true : false
 
 const checkType = (board, i, j, type) => board[i][j] === type ? true : false
 
-const seconds = (seconds) => seconds + 1 !== 60 ? seconds + 1 : 0
+const seconds = (seconds) => seconds - 1
 
-const minutes = (seconds, minutes) => seconds + 1 !== 60 ? minutes : minutes + 1
-
-const time = (seconds, minutes) => {
+const time = (seconds) => {
   let time = ""
+  let minutes = seconds / 60 < 1 ? 0 : Math.floor(seconds / 60)
+  seconds = seconds - (minutes * 60)
   minutes < 10 ? time += "0" + minutes + ":" : time += minutes + ":"
   seconds < 10 ? time += "0" + seconds : time += seconds
 
@@ -22,4 +22,6 @@ const stroke = (board, i, j, di, dj) => {
   return newBoard
 }
 
-module.exports = { isOk, checkType, seconds, minutes, time, stroke }
+const finished = (finished) => finished ? true : false
+
+module.exports = { isOk, checkType, seconds, time, stroke, finished }

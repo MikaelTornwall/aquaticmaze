@@ -19,7 +19,9 @@ const levelone = {
     ['x', 'x', ' ', 's', ' ', ' ', 'x', 'x', ' ', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', 'x'],
     ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'p', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']
   ],
-  minStrokes: 66
+  minStrokes: 66,
+  maxStrokes: 75,
+  maxTime: 12
 }
 
 const leveltwo = {
@@ -43,7 +45,9 @@ const leveltwo = {
     ['x', 'x', ' ', ' ', ' ', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 's', ' ', 'x'],
     ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'p', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']
   ],
-  minStrokes: 66
+  minStrokes: 78,
+  maxStrokes: 82,
+  maxTime: 20
 }
 
 const levelthree = {
@@ -67,7 +71,9 @@ const levelthree = {
     ['x', 'x', ' ', ' ', ' ', ' ', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 's', ' ', 'x'],
     ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'p', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x']
   ],
-  minStrokes: 66
+  minStrokes: 66,
+  maxStrokes: 80,
+  maxTime: 20
 }
 
 const levels = [levelone, leveltwo, levelthree]

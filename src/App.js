@@ -35,9 +35,10 @@ class App extends Component {
     points: 0,
     strokes: 0,
     seconds: 0,
-    minutes: 0,
     finished: false,
-    credits: false
+    timeIsUp: false,
+    credits: false,
+    timer: "pending"
   }
 
   componentWillMount() {
@@ -48,19 +49,12 @@ class App extends Component {
     this.initState()
   }
 
-  clock = () => {
-      setInterval(() => {
-        this.setState({
-          seconds: Helper.seconds(this.state.seconds),
-          minutes: Helper.minutes(this.state.seconds, this.state.minutes)
-        })
-      }, 1000)
-  }
-
   initState = () => {
     this.state.board.map((row, i) =>
       row.map((col, j) => (this.state.board[i][j] === 'o') ? this.setState({ i: i, j: j }) : null)
-    )}
+    )
+    this.setState({ seconds: Levels[this.state.level - 1].maxTime })
+  }
 
   generateBoardCopy = () => Levels[this.state.level - 1].board.map(row => [...row])
 
@@ -71,7 +65,10 @@ class App extends Component {
       strokes: 0,
       seconds: 0,
       minutes: 0,
-      finished: false
+      finished: false,
+      timeIsUp: false,
+      timer: "pending",
+      message: ""
     })
     this.initState()
   }
@@ -87,7 +84,6 @@ class App extends Component {
       await this.setState({
         level: this.state.level + 1
       })
-
       this.restart()
     }
   }
@@ -108,26 +104,67 @@ class App extends Component {
     }
   }
 
-  move = (di, dj) => {
-    if (this.state.strokes === 0 && this.state.level === 1) this.clock()
+timeIsUp = (seconds) => {
+  if (seconds == 0) {
+    this.setState({
+      finished: true,
+      timeIsUp: true,
+      message: "You were too slow!"
+    })
+  }
+}
 
-    if (Helper.checkType(this.state.board, this.state.i + di, this.state.j + dj, "p")) {
+// Set timer to start from maxTime to 0
+  timer = () => {
+    let interval = setInterval(() => {
+      if (this.state.finished) {
+        clearInterval(interval)
+        return
+      }
+
+      this.setState({ seconds: Helper.seconds(this.state.seconds) })
+      this.timeIsUp(this.state.seconds)
+    }, 1000)
+  }
+
+  ready = (timerState) => {
+    if (timerState === "pending") this.setState({ timer: "go" })
+  }
+
+  setTimer = (timerState) => {
+    if (timerState === "go") {
+      this.setState({ timer: "on" })
+      this.timer()
+    }
+  }
+
+  isOk = (board, i, j, di, dj) => {
+    if (Helper.isOk(board, i + di, j + dj)) {
+      this.setState({
+        board: Helper.stroke(board, i, j, di, dj),
+        i: i + di,
+        j: j + dj,
+        strokes: this.state.strokes + 1
+       })
+    }
+  }
+
+  checkType = (board, i, j, di, dj) => {
+    if (Helper.checkType(board, i + di, j + dj, "p")) {
       this.setState({
         message: "Well done!",
         finished: true
       })
     }
 
-    if (Helper.checkType(this.state.board, this.state.i + di, this.state.j + dj, "s")) this.setState({ points: this.state.points + 1 })
+    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ points: this.state.points + 1 })
+  }
 
-    if (Helper.isOk(this.state.board, this.state.i + di, this.state.j + dj)) {
-      this.setState({
-        board: Helper.stroke(this.state.board, this.state.i, this.state.j, di, dj),
-        i: this.state.i + di,
-        j: this.state.j + dj,
-        strokes: this.state.strokes + 1
-       })
-    }
+  move = (di, dj) => {
+    this.ready(this.state.timer)
+    this.setTimer(this.state.timer)
+    this.checkType(this.state.board, this.state.i, this.state.j, di, dj)
+    this.isOk(this.state.board, this.state.i, this.state.j, di, dj)
   }
 
   render() {
@@ -152,6 +189,8 @@ class App extends Component {
         points={this.state.points}
         strokes={this.state.strokes}
         onClick={this.nextLevel}
+        timeIsUp={this.state.timeIsUp}
+        time={Helper.time(this.state.seconds)}
       />
     )
 
@@ -163,7 +202,7 @@ class App extends Component {
         <Statistics
           points={this.state.points}
           strokes={this.state.strokes}
-          time={Helper.time(this.state.seconds, this.state.minutes)}
+          time={Helper.time(this.state.seconds)}
         />
         <Maze
           renderBoard={renderBoard()}
@@ -175,7 +214,7 @@ class App extends Component {
       </div>
     )
 
-    const finished = () => this.state.finished ? renderFinished() : renderGame()
+    const finished = () => Helper.finished(this.state.finished) ? renderFinished() : renderGame()
 
     return (
       <div className="Container">
@@ -191,7 +230,6 @@ class App extends Component {
             credits={this.state.credits}
           />
       </div>
-
     )
   }
 }
