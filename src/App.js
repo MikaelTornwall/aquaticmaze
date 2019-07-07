@@ -171,7 +171,7 @@ timeIsUp = (seconds) => {
 
     const renderGraphics = (col) => {
       if (col === 'x') {
-        return <img src={Brick} width="25" alt="" />
+        return <img src={Brick} width="27" height="28" alt="" />
       } else if (col === 'o') {
         return <img id="fish" style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" alt="" />
       } else if (col === ' ') {

@@ -1,0 +1,9 @@
+#Restart__button {
+  background: var(--main-color);
+  border-radius: .2rem;
+  cursor: pointer;
+}
+
+#Restart__button:hover {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+}
