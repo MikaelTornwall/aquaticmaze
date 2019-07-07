@@ -3,7 +3,7 @@ import './styles/maze.css'
 
 const Maze = ({ renderBoard }) => (
   <div>
-    <table id="Maze__table" cellpadding="0">
+    <table id="Maze__table" cellspacing="0" cellpadding="0">
       <tbody>
         {renderBoard}
       </tbody>

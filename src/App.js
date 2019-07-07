@@ -175,7 +175,7 @@ timeIsUp = (seconds) => {
       } else if (col === 'o') {
         return <img id="fish" style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" alt="" />
       } else if (col === ' ') {
-        return <img src={Water} width="25" alt="" />
+        return <img src={Water} width="27" alt="" />
       } else if (col === 's') {
         return <img id="sushi" src={Sushi} width="25" alt="" />
       } else if (col === 'p') {
