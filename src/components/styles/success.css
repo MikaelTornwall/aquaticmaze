@@ -11,6 +11,12 @@
   min-width: 12rem;
 }
 
+#Success__points {
+  font-family: 'Caveat Brush', sans-serif;
+  font-size: 2.3rem;
+  margin: 1.1rem 0;
+}
+
 #Success__table {
   background: var(--main-color);
   margin-top: .5rem;
@@ -34,7 +40,7 @@
 }
 
 #Success__button:focus {
-  outline: none;  
+  outline: none;
 }
 
 #Success__fish {

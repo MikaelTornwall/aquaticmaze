@@ -65,21 +65,3 @@ tr {
 a {
   cursor: pointer;
 }
-
-#fish {
-}
-
-#sushi {
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-name: sushi;
-}
-
-@keyframes sushi {
-    33% {
-      transform: rotate(5deg);
-    }
-    66% {
-      transform: rotate(-5deg);
-    }
-}

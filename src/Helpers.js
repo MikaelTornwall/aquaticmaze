@@ -24,4 +24,8 @@ const stroke = (board, i, j, di, dj) => {
 
 const finished = (finished) => finished ? true : false
 
-module.exports = { isOk, checkType, seconds, time, stroke, finished }
+const points = (food, strokes, seconds) => {
+  return Math.round((1000 * food * seconds) / strokes )
+}
+
+module.exports = { isOk, checkType, seconds, time, stroke, finished, points }

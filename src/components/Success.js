@@ -15,11 +15,12 @@ class Success extends React.Component {
       <div id="Success__container">
         <img id="Success__fish" src={Fish} width="75" alt="" />
         <strong>{this.props.message}</strong>
+        <div id="Success__points">{this.props.points} points!</div>
         <table id="Success__table">
           <tbody>
             <tr className="Success__row">
-              <td className="Success__col">Points: </td>
-              <td>{this.props.points}</td>
+              <td className="Success__col">Food: </td>
+              <td>{this.props.food}</td>
             </tr>
             <tr>
               <td>Strokes: </td>

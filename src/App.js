@@ -8,11 +8,11 @@ import Statistics from './components/Statistics'
 import Footer from './components/Footer'
 
 // Graphics
-import Fish from '../public/graphics/fish.svg'
-import Brick from '../public/graphics/brick-wall.svg'
-import Water from '../public/graphics/flood.svg'
-import Sushi from '../public/graphics/sushi.svg'
-import Pipe from '../public/graphics/pipes.svg'
+import Brick from './graphics/Brick'
+import Water from './graphics/Water'
+import Sushi from './graphics/Sushi'
+import Pipe from './graphics/Pipe'
+import Fish from './graphics/Fish'
 
 // Helpers
 import KeyboardEventHandler from 'react-keyboard-event-handler'
@@ -32,9 +32,10 @@ class App extends Component {
     j: null,
     direction: 90,
     message: "",
-    points: 0,
+    food: 0,
     strokes: 0,
     seconds: 0,
+    points: 0,
     finished: false,
     timeIsUp: false,
     credits: false,
@@ -61,9 +62,10 @@ class App extends Component {
   restart = async () => {
     await this.setState({
       board: this.generateBoardCopy(),
-      points: 0,
       strokes: 0,
       seconds: 0,
+      food: 0,
+      points: 0,
       minutes: 0,
       finished: false,
       timeIsUp: false,
@@ -105,7 +107,7 @@ class App extends Component {
   }
 
 timeIsUp = (seconds) => {
-  if (seconds == 0) {
+  if (seconds === 0) {
     this.setState({
       finished: true,
       timeIsUp: true,
@@ -114,7 +116,6 @@ timeIsUp = (seconds) => {
   }
 }
 
-// Set timer to start from maxTime to 0
   timer = () => {
     let interval = setInterval(() => {
       if (this.state.finished) {
@@ -152,12 +153,13 @@ timeIsUp = (seconds) => {
   checkType = (board, i, j, di, dj) => {
     if (Helper.checkType(board, i + di, j + dj, "p")) {
       this.setState({
-        message: "Well done!",
-        finished: true
+        message: "Well done! You got ",
+        finished: true,
+        points: Helper.points(this.state.food, this.state.strokes, this.state.seconds)
       })
     }
 
-    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ points: this.state.points + 1 })
+    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ food: this.state.food + 10 })
   }
 
   move = (di, dj) => {
@@ -171,15 +173,15 @@ timeIsUp = (seconds) => {
 
     const renderGraphics = (col) => {
       if (col === 'x') {
-        return <img src={Brick} width="27" height="28" alt="" />
+        return <Brick />
       } else if (col === 'o') {
-        return <img id="fish" style={{transform: `rotate(${this.state.direction}deg)`}} src={Fish} width="25" alt="" />
+        return <Fish direction={this.state.direction} />
       } else if (col === ' ') {
-        return <img src={Water} width="27" alt="" />
+        return <Water />
       } else if (col === 's') {
-        return <img id="sushi" src={Sushi} width="25" alt="" />
+        return <Sushi />
       } else if (col === 'p') {
-        return <img src={Pipe} width="25" alt="" />
+        return <Pipe />
       }
     }
 
@@ -187,6 +189,7 @@ timeIsUp = (seconds) => {
       <Success
         message={this.state.message}
         points={this.state.points}
+        food={this.state.food}
         strokes={this.state.strokes}
         onClick={this.nextLevel}
         timeIsUp={this.state.timeIsUp}
@@ -200,7 +203,7 @@ timeIsUp = (seconds) => {
     const renderGame = () => (
       <div>
         <Statistics
-          points={this.state.points}
+          food={this.state.food}
           strokes={this.state.strokes}
           time={Helper.time(this.state.seconds)}
         />
