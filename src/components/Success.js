@@ -20,7 +20,7 @@ class Success extends React.Component {
           <tbody>
             <tr className="Success__row">
               <td className="Success__col">Food: </td>
-              <td>{this.props.food}</td>
+              <td>{this.props.energy}</td>
             </tr>
             <tr>
               <td>Strokes: </td>

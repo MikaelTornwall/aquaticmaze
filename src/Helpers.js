@@ -25,7 +25,7 @@ const stroke = (board, i, j, di, dj) => {
 const finished = (finished) => finished ? true : false
 
 const points = (food, strokes, seconds) => {
-  return Math.round((1000 * food * seconds) / strokes )
+  return Math.round((100 * food * (seconds / 5)) / strokes )
 }
 
 module.exports = { isOk, checkType, seconds, time, stroke, finished, points }

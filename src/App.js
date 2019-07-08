@@ -32,7 +32,7 @@ class App extends Component {
     j: null,
     direction: 90,
     message: "",
-    food: 0,
+    energy: 0,
     strokes: 0,
     seconds: 0,
     points: 0,
@@ -64,13 +64,13 @@ class App extends Component {
       board: this.generateBoardCopy(),
       strokes: 0,
       seconds: 0,
-      food: 0,
+      energy: 0,
       points: 0,
       minutes: 0,
       finished: false,
       timeIsUp: false,
-      timer: "pending",
-      message: ""
+      timer: 'pending',
+      message: ''
     })
     this.initState()
   }
@@ -111,14 +111,15 @@ timeIsUp = (seconds) => {
     this.setState({
       finished: true,
       timeIsUp: true,
-      message: "You were too slow!"
+      message: 'You were too slow!'
     })
   }
 }
 
   timer = () => {
     let interval = setInterval(() => {
-      if (this.state.finished) {
+      if (this.state.timer === 'pending' || this.state.finished) {
+        console.log("HIT")
         clearInterval(interval)
         return
       }
@@ -129,12 +130,12 @@ timeIsUp = (seconds) => {
   }
 
   ready = (timerState) => {
-    if (timerState === "pending") this.setState({ timer: "go" })
+    if (timerState === 'pending') this.setState({ timer: 'go' })
   }
 
   setTimer = (timerState) => {
-    if (timerState === "go") {
-      this.setState({ timer: "on" })
+    if (timerState === 'go') {
+      this.setState({ timer: 'on' })
       this.timer()
     }
   }
@@ -155,11 +156,11 @@ timeIsUp = (seconds) => {
       this.setState({
         message: "Well done! You got ",
         finished: true,
-        points: Helper.points(this.state.food, this.state.strokes, this.state.seconds)
+        points: Helper.points(this.state.energy, this.state.strokes, this.state.seconds)
       })
     }
 
-    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ food: this.state.food + 10 })
+    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ energy: this.state.energy + 100, seconds: this.state.seconds + 1 })
   }
 
   move = (di, dj) => {
@@ -189,7 +190,7 @@ timeIsUp = (seconds) => {
       <Success
         message={this.state.message}
         points={this.state.points}
-        food={this.state.food}
+        energy={this.state.energy}
         strokes={this.state.strokes}
         onClick={this.nextLevel}
         timeIsUp={this.state.timeIsUp}
@@ -203,7 +204,7 @@ timeIsUp = (seconds) => {
     const renderGame = () => (
       <div>
         <Statistics
-          food={this.state.food}
+          energy={this.state.energy}
           strokes={this.state.strokes}
           time={Helper.time(this.state.seconds)}
         />
