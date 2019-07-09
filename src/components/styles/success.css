@@ -18,18 +18,18 @@
 
 #Success__finishedMessage {
   font-size: 1.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 #Success__points {
   font-family: 'Caveat Brush', sans-serif;
   font-size: 2.5rem;
-  margin: 1.1rem 0;
+  margin: 1rem 0;
 }
 
 #Success__table {
   background: var(--main-color);
-  margin-top: .5rem;
+  margin: .2rem 0 .8rem 0;
   padding: 1rem;
 }
 
@@ -57,14 +57,23 @@
   padding: .2rem;
   animation: Success__fish;
   animation-duration: 2s;
-  animation-iteration-count: infinite;
+  animation-iteration-count: infinite;  
 }
 
 @keyframes Success__fish {
-  33% {
+  10% {
     transform: rotate(5deg);
   }
-  66% {
+  20% {
+    transform: rotate(8deg);
+  }
+  30% {
+    transform: rotate(5deg);
+  }
+  60% {
     transform: rotate(-5deg);
+  }
+  80% {
+    transform: rotate(-10%);
   }
 }
