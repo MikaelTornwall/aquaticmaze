@@ -37,9 +37,10 @@ class App extends Component {
     seconds: 0,
     points: 0,
     finished: false,
+    finishedMessage: '',
     timeIsUp: false,
     credits: false,
-    timer: "pending"
+    timer: 'pending'
   }
 
   componentWillMount() {
@@ -68,6 +69,7 @@ class App extends Component {
       points: 0,
       minutes: 0,
       finished: false,
+      finishedMessage: '',
       timeIsUp: false,
       timer: 'pending',
       message: ''
@@ -78,16 +80,10 @@ class App extends Component {
   toggleCredits = () => this.state.credits ? this.setState({ credits: false }) : this.setState({ credits: true })
 
   nextLevel = async () => {
-    if (this.state.level === Levels.length) {
-      this.setState({
-        message: "You have successfully finished the game!"
-      })
-    } else {
-      await this.setState({
-        level: this.state.level + 1
-      })
-      this.restart()
-    }
+    await this.setState({
+      level: this.state.level + 1
+    })
+    this.restart()
   }
 
   handleKeyPress = (key) => {
@@ -158,6 +154,12 @@ timeIsUp = (seconds) => {
         finished: true,
         points: Helper.points(this.state.energy, this.state.strokes, this.state.seconds)
       })
+      if (this.state.level === Levels.length) {
+        this.setState({
+          finishedMessage: "You have successfully finished the game!",
+          timeIsUp: true
+        })
+      }
     }
 
     if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ energy: this.state.energy + 100, seconds: this.state.seconds + 1 })
@@ -188,6 +190,8 @@ timeIsUp = (seconds) => {
 
     const renderFinished = () => (
       <Success
+        finishedMessage={this.state.finishedMessage}
+        level={this.state.level}
         message={this.state.message}
         points={this.state.points}
         energy={this.state.energy}
@@ -204,6 +208,7 @@ timeIsUp = (seconds) => {
     const renderGame = () => (
       <div>
         <Statistics
+          level={this.state.level}
           energy={this.state.energy}
           strokes={this.state.strokes}
           time={Helper.time(this.state.seconds)}

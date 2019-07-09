@@ -13,7 +13,9 @@ class Success extends React.Component {
 
     return (
       <div id="Success__container">
-        <img id="Success__fish" src={Fish} width="75" alt="" />
+        <img id="Success__fish" src={Fish} width="100" alt="" />
+        <strong id="Success__level">Level {this.props.level}</strong>
+        <strong id="Success__finishedMessage">{this.props.finishedMessage}</strong>
         <strong>{this.props.message}</strong>
         <div id="Success__points">{this.props.points} points!</div>
         <table id="Success__table">

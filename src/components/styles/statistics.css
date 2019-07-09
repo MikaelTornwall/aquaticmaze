@@ -1,9 +1,9 @@
-.statistics {
+.Statistics {
   background: var(--main-color);
   color: white;
   padding: 0.3rem;
 }
 
-.statistics__stat {
+.Statistics__stat {
   margin-right: 1rem;
 }
