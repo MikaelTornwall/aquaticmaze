@@ -115,11 +115,9 @@ timeIsUp = (seconds) => {
   timer = () => {
     let interval = setInterval(() => {
       if (this.state.timer === 'pending' || this.state.finished) {
-        console.log("HIT")
         clearInterval(interval)
         return
       }
-
       this.setState({ seconds: Helper.seconds(this.state.seconds) })
       this.timeIsUp(this.state.seconds)
     }, 1000)
@@ -161,7 +159,6 @@ timeIsUp = (seconds) => {
         })
       }
     }
-
     if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ energy: this.state.energy + 100, seconds: this.state.seconds + 1 })
   }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactSVG from 'react-svg'
 import Fish from '../../public/graphics/fish.svg'
 
 import './styles/fish.css'
