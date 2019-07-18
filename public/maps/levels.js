@@ -21,7 +21,7 @@ const levelone = {
   ],
   minStrokes: 66,
   maxStrokes: 75,
-  maxTime: 12
+  maxTime: 6
 }
 
 const leveltwo = {
@@ -47,7 +47,7 @@ const leveltwo = {
   ],
   minStrokes: 78,
   maxStrokes: 82,
-  maxTime: 20
+  maxTime: 10
 }
 
 const levelthree = {
@@ -73,7 +73,7 @@ const levelthree = {
   ],
   minStrokes: 66,
   maxStrokes: 80,
-  maxTime: 20
+  maxTime: 12
 }
 
 const levelfour = {
@@ -99,9 +99,35 @@ const levelfour = {
 ],
 minStrokes: 66,
 maxStrokes: 80,
-maxTime: 30
+maxTime: 15
 }
 
-const levels = [levelone, leveltwo, levelthree, levelfour]
+const levelfive = {
+  board: [
+  ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+  ['x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', ' ', ' ', 's', ' ', 's', ' ', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', 'x'],
+  ['x', 'x', 'x', 'x', ' ', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', ' ', ' ', ' ', ' ', ' ', 'x', 'x'],
+  ['x', 'x', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', 's', ' ', ' ', ' ', ' ', 'x', 'x', 'x', 'x', 'x', ' ', 'x', 'x'],
+  ['x', ' ', ' ', 's', ' ', 'x', ' ', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', ' ', 'x', 'x', 'x', 'x', 'x', ' ', 'x', 'x'],
+  ['x', 'p', 'x', ' ', 's', 'x', ' ', 'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', 'x', 'x', 'x', 'x', 'x', 's', 'x', 'x'],
+  ['x', 'x', 'x', 'x', 'x', 'x', ' ', 'x', ' ', 'x', 'x', 'x', 'x', 'x', ' ', 'x', ' ', ' ', ' ', 'x', 'x', 'x', ' ', 'x', 'x'],
+  ['x', 'x', 'x', 'x', 'x', 'x', ' ', 'x', ' ', 'x', ' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x', 's', ' ', ' ', 'x', 'x'],
+  ['x', 'x', 's', ' ', ' ', 'x', ' ', 'x', ' ', 'x', ' ', 'o', ' ', 'x', 's', 'x', ' ', 'x', 's', 'x', 'x', 'x', ' ', 'x', 'x'],
+  ['x', 'x', ' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x', ' ', ' ', ' ', 'x', ' ', 'x', ' ', 'x', ' ', 'x', 'x', 'x', ' ', ' ', 'x'],
+  ['x', 'x', 's', 's', ' ', 'x', ' ', 'x', ' ', 'x', 'x', ' ', 'x', 'x', ' ', 'x', ' ', 'x', ' ', ' ', ' ', 'x', ' ', 's', 'x'],
+  ['x', 'x', 'x', 'x', ' ', 'x', ' ', 'x', ' ', 'x', 'x', ' ', ' ', ' ', ' ', 'x', ' ', 'x', 'x', 'x', ' ', 'x', 's', ' ', 'x'],
+  ['x', 's', ' ', ' ', ' ', ' ', ' ', 'x', ' ', 'x', 'x', 'x', 'x', 'x', 'x', 'x', ' ', 'x', 'x', 'x', ' ', 'x', 'x', ' ', 'x'],
+  ['x', 'x', 'x', 'x', ' ', ' ', ' ', 'x', ' ', ' ', ' ', ' ', 's', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' ', 'x', 'x', ' ', 'x'],
+  ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', ' ', 'x', 's', ' ', ' ', ' ', 'x'],
+  ['x', 'x', 'x', 'x', 'x', 'x', 'x', ' ', ' ', 'x', ' ', ' ', ' ', 's', ' ', ' ', ' ', ' ', ' ', 'x', 'x', 'x', ' ', 'x', 'x'],
+  ['x', 'x', 'x', 'x', 'x', 'x', 'x', 's', ' ', ' ', ' ', 'x', 'x', 's', 's', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 's', 'x', 'x'],
+  ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
+],
+minStrokes: 66,
+maxStrokes: 80,
+maxTime: 16
+}
+
+const levels = [levelone, leveltwo, levelthree, levelfour, levelfive]
 
 module.exports = levels
