@@ -5,6 +5,7 @@ import Maze from './components/Maze'
 import Restart from './components/Restart'
 import Success from './components/Success'
 import Statistics from './components/Statistics'
+import Notification from './components/Notification'
 import Footer from './components/Footer'
 
 // Graphics
@@ -31,11 +32,13 @@ class App extends Component {
     i: null,
     j: null,
     direction: 90,
-    message: "",
+    message: '',
+    notificationClass: '',
     energy: 0,
     strokes: 0,
     seconds: 0,
     points: 0,
+    maximum: 0,
     finished: false,
     finishedMessage: '',
     timeIsUp: false,
@@ -51,14 +54,24 @@ class App extends Component {
     this.initState()
   }
 
-  initState = () => {
-    this.state.board.map((row, i) =>
-      row.map((col, j) => (this.state.board[i][j] === 'o') ? this.setState({ i: i, j: j }) : null)
-    )
-    this.setState({ seconds: Levels[this.state.level - 1].maxTime })
-  }
-
   generateBoardCopy = () => Levels[this.state.level - 1].board.map(row => [...row])
+
+  initState = () => {
+    let max = 0
+    this.state.board.map((row, i) =>
+      row.map((col, j) => {
+        if (this.state.board[i][j] === 'o') {
+          this.setState({ i: i, j: j })
+        } else if (this.state.board[i][j] === 's') {
+          max++
+        }
+      })
+    )
+    this.setState({
+      seconds: Levels[this.state.level - 1].maxTime,
+      maximum: max
+     })
+  }
 
   restart = async () => {
     await this.setState({
@@ -134,8 +147,8 @@ timeIsUp = (seconds) => {
     }
   }
 
-  isOk = (board, i, j, di, dj) => {
-    if (Helper.isOk(board, i + di, j + dj)) {
+  isOk = (board, i, j, di, dj, collected, maximum) => {
+    if (Helper.isOk(board, i + di, j + dj, collected, maximum)) {
       this.setState({
         board: Helper.stroke(board, i, j, di, dj),
         i: i + di,
@@ -145,13 +158,21 @@ timeIsUp = (seconds) => {
     }
   }
 
-  checkType = (board, i, j, di, dj) => {
+  checkType = (board, i, j, di, dj, collected, maximum) => {
     if (Helper.checkType(board, i + di, j + dj, "p")) {
-      this.setState({
-        message: "Well done! You got ",
-        finished: true,
-        points: Helper.points(this.state.energy, this.state.strokes, this.state.seconds)
-      })
+      if (collected === maximum) {
+        this.setState({
+          message: "Well done! You got ",
+          finished: true,
+          points: Helper.points(this.state.energy, this.state.strokes, this.state.seconds)
+        })
+      } else {
+        this.setState({ message: 'Remember to collect all the food!', notificationClass: 'Notification__container' })
+        setTimeout(() => {
+          this.setState({ message: '', notificationClass: '' })
+        }, 2000)
+      }
+
       if (this.state.level === Levels.length) {
         this.setState({
           finishedMessage: "You have successfully finished the game!",
@@ -159,14 +180,14 @@ timeIsUp = (seconds) => {
         })
       }
     }
-    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ energy: this.state.energy + 100, seconds: this.state.seconds + 1 })
+    if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ energy: this.state.energy + 1, seconds: this.state.seconds + 1 })
   }
 
   move = (di, dj) => {
     this.ready(this.state.timer)
     this.setTimer(this.state.timer)
-    this.checkType(this.state.board, this.state.i, this.state.j, di, dj)
-    this.isOk(this.state.board, this.state.i, this.state.j, di, dj)
+    this.checkType(this.state.board, this.state.i, this.state.j, di, dj, this.state.energy, this.state.maximum)
+    this.isOk(this.state.board, this.state.i, this.state.j, di, dj, this.state.energy, this.state.maximum)
   }
 
   render() {
@@ -216,6 +237,10 @@ timeIsUp = (seconds) => {
         <KeyboardEventHandler
           handleKeys={['up', 'down', 'left', 'right']}
           onKeyEvent={(key, e) => this.handleKeyPress(key)}
+        />
+        <Notification
+          message={this.state.message}
+          className={this.state.notificationClass}
         />
       </div>
     )

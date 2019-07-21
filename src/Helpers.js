@@ -1,6 +1,23 @@
-const isOk = (board, i, j) => board[i][j] !== "x" ? true : false
+const isOk = (board, i, j, collected, maximum) => {
+  if (board[i][j] === "x") {
+    return false
+  }
+  if (board[i][j] === "p" && collected !== maximum) {
+    return false
+  }
+  console.log('collected: ', collected)
+  console.log('maximum: ', maximum)
+  return true
+}
 
 const checkType = (board, i, j, type) => board[i][j] === type ? true : false
+
+const finishIsAllowed = (board, i, j, collected, maximum) => {
+  if (board[i][j] === 'p' && collected === maximum) {
+    return true
+  }
+  return false
+}
 
 const seconds = (seconds) => seconds - 1
 
@@ -25,7 +42,7 @@ const stroke = (board, i, j, di, dj) => {
 const finished = (finished) => finished ? true : false
 
 const points = (food, strokes, seconds) => {
-  return Math.round((100 * food * (seconds / 10)) / strokes)
+  return Math.round(((10000 * food) * (seconds / 10)) / strokes)
 }
 
 module.exports = { isOk, checkType, seconds, time, stroke, finished, points }

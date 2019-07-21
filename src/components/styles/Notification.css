@@ -1,0 +1,12 @@
+.Notification__container {
+  margin-top: .2rem;
+  padding: .5rem;
+  text-align: center;
+  border: 2px solid var(--main-color);
+  border-radius: 5px;
+}
+
+.Notification__text {
+  color: var(--main-color);
+  font-size: 1.3rem;
+}
