@@ -245,12 +245,12 @@ timeIsUp = (seconds) => {
       </div>
     )
 
-    const finished = () => Helper.finished(this.state.finished) ? renderFinished() : renderGame()
+    const game = () => Helper.finished(this.state.finished) ? renderFinished() : renderGame()
 
     return (
       <div className="Container">
         <div className="Container__game">
-          {finished()}
+          {game()}
           <Restart
             onClick={this.restart}
           />

@@ -1,23 +1,13 @@
 const isOk = (board, i, j, collected, maximum) => {
   if (board[i][j] === "x") {
     return false
-  }
-  if (board[i][j] === "p" && collected !== maximum) {
+  } else if (board[i][j] === "p" && collected !== maximum) {
     return false
   }
-  console.log('collected: ', collected)
-  console.log('maximum: ', maximum)
   return true
 }
 
 const checkType = (board, i, j, type) => board[i][j] === type ? true : false
-
-const finishIsAllowed = (board, i, j, collected, maximum) => {
-  if (board[i][j] === 'p' && collected === maximum) {
-    return true
-  }
-  return false
-}
 
 const seconds = (seconds) => seconds - 1
 
