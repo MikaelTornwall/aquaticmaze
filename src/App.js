@@ -8,13 +8,6 @@ import Statistics from './components/Statistics'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 
-// Graphics
-import Brick from './graphics/Brick'
-import Water from './graphics/Water'
-import Sushi from './graphics/Sushi'
-import Pipe from './graphics/Pipe'
-import Fish from './graphics/Fish'
-
 // Helpers
 import KeyboardEventHandler from 'react-keyboard-event-handler'
 import Helper from './Helpers'
@@ -28,6 +21,7 @@ import './App.css'
 class App extends Component {
   state = {
     board: null,
+    theme: '',
     level: 1,
     i: null,
     j: null,
@@ -69,7 +63,8 @@ class App extends Component {
     )
     this.setState({
       seconds: Levels[this.state.level - 1].maxTime,
-      maximum: max
+      maximum: max,
+      theme: Levels[this.state.level - 1].theme
      })
   }
 
@@ -159,6 +154,8 @@ timeIsUp = (seconds) => {
   }
 
   checkType = (board, i, j, di, dj, collected, maximum) => {
+    if (Helper.checkType(board, i + di, j + dj, " ")) return
+    
     if (Helper.checkType(board, i + di, j + dj, "p")) {
       if (collected === maximum) {
         this.setState({
@@ -170,7 +167,7 @@ timeIsUp = (seconds) => {
         this.setState({ message: 'Remember to collect all the food!', notificationClass: 'Notification__container' })
         setTimeout(() => {
           this.setState({ message: '', notificationClass: '' })
-        }, 2000)
+        }, 3000)
       }
 
       if (this.state.level === Levels.length) {
@@ -180,6 +177,16 @@ timeIsUp = (seconds) => {
         })
       }
     }
+
+    if (Helper.checkType(board, i + di, j + dj, "saw")) {
+      this.setState({
+        message: 'Oh no, you became sushi!',
+        finished: true,
+        timeIsUp: true
+      })
+      return
+    }
+
     if (Helper.checkType(board, i + di, j + dj, "s")) this.setState({ energy: this.state.energy + 1, seconds: this.state.seconds + 1 })
   }
 
@@ -191,20 +198,6 @@ timeIsUp = (seconds) => {
   }
 
   render() {
-
-    const renderGraphics = (col) => {
-      if (col === 'x') {
-        return <Brick />
-      } else if (col === 'o') {
-        return <Fish direction={this.state.direction} />
-      } else if (col === ' ') {
-        return <Water />
-      } else if (col === 's') {
-        return <Sushi />
-      } else if (col === 'p') {
-        return <Pipe />
-      }
-    }
 
     const renderFinished = () => (
       <Success
@@ -220,7 +213,7 @@ timeIsUp = (seconds) => {
       />
     )
 
-    const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{renderGraphics(col)}</td>)
+    const renderRow = (row, index) => row.map((col, j) => <td key={index + "," + j} id={index + "," + j}>{Helper.renderGraphics(col, this.state.direction, this.state.theme)}</td>)
     const renderBoard = () => this.state.board.map((row, index) => <tr key={index}>{renderRow(row, index)}</tr>)
 
     const renderGame = () => (
